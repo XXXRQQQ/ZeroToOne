@@ -18,6 +18,17 @@
 
 ---
 
+## 📸 效果预览
+
+<p align="center">
+  <img src="./screenshots/dashboard-full.png" alt="数据大屏效果预览" width="100%" />
+</p>
+<p align="center">
+  <em>从零到一数据大屏 — 实时数据仪表盘 · 告警监控流 · 销售趋势图 · 排行榜 · 热力日历</em>
+</p>
+
+---
+
 ## 📖 项目简介
 
 **从零到一数据大屏（ZeroToOne）** 是一个面向数据可视化初学者的开源项目。基于 **Vue3 + Vite + Pinia + ECharts** 技术栈，采用模块化架构设计，带你从零开始搭建一个功能完善、视觉效果出色的数据大屏。
@@ -39,6 +50,7 @@
 | 样式方案 | SCSS | CSS 预处理器 |
 | 单元测试 | Vitest | 组件与工具函数测试 |
 | E2E 测试 | Playwright | 大屏端到端测试 |
+| 自动截图 | Playwright | 一键生成大屏截图 |
 | 代码质量 | ESLint + Prettier | 代码规范与格式化 |
 | Git Hooks | Husky + lint-staged | 提交前质量卡点 |
 
@@ -49,6 +61,9 @@
 ```
 ZeroToOne/
 ├── public/                     # 公共静态资源
+├── scripts/                    # 工具脚本
+│   └── screenshot.ts           # 自动化截图脚本
+├── screenshots/                # 自动截图输出目录
 ├── src/
 │   ├── assets/                 # 静态资源
 │   │   ├── images/             # 图片
@@ -58,9 +73,18 @@ ZeroToOne/
 │   │
 │   ├── components/             # 通用组件（按功能模块拆分）
 │   │   ├── common/             # 基础组件
-│   │   ├── charts/             # 图表组件（BarChart、LineChart...）
+│   │   ├── charts/             # 图表组件
+│   │   │   ├── BarChart.vue        # 柱状图
+│   │   │   ├── LineChart.vue       # 折线图
+│   │   │   ├── PieChart.vue        # 饼图
+│   │   │   ├── GaugeGroup.vue      # 仪表盘组
+│   │   │   └── HeatCalendar.vue    # 热力日历
 │   │   ├── map/                # 地图组件（ChinaMap...）
-│   │   ├── dashboard/          # 大屏业务组件（DataCard、RankList...）
+│   │   ├── dashboard/          # 大屏业务组件
+│   │   │   ├── DataCard.vue        # 数据指标卡
+│   │   │   ├── RankList.vue        # 排行榜
+│   │   │   ├── AlertFlow.vue       # 实时告警流
+│   │   │   └── LiveMetrics.vue     # 实时仪表盘
 │   │   └── layout/             # 布局组件（FullScreen、GridLayout...）
 │   │
 │   ├── views/                  # 页面/大屏视图
@@ -78,7 +102,8 @@ ZeroToOne/
 │   │   │   ├── sales.ts        # 销售数据
 │   │   │   ├── map.ts          # 地图数据
 │   │   │   ├── trend.ts        # 趋势数据
-│   │   │   └── rank.ts         # 排行榜数据
+│   │   │   ├── rank.ts         # 排行榜数据
+│   │   │   └── alerts.ts       # 告警数据
 │   │   └── adapter.ts          # 数据适配器（API ↔ Mock 一键切换）
 │   │
 │   ├── composables/            # 组合式函数（逻辑复用）
@@ -99,15 +124,10 @@ ZeroToOne/
 │
 ├── tests/                      # 测试目录
 │   ├── unit/                   # 单元测试
-│   │   ├── components/
-│   │   ├── stores/
-│   │   └── utils/
 │   └── e2e/                    # E2E 测试
 │
 ├── .env                        # 环境变量（开发）
 ├── .env.production             # 环境变量（生产）
-├── .eslintrc.cjs               # ESLint 配置
-├── .prettierrc                 # Prettier 配置
 ├── vitest.config.ts            # Vitest 配置
 ├── playwright.config.ts        # Playwright 配置
 ├── tsconfig.json               # TypeScript 配置
@@ -124,10 +144,13 @@ ZeroToOne/
 | 🚀 **从零搭建** | 从项目初始化到完整大屏，每一步都有详细指引 |
 | 🧩 **模块化架构** | 组件、Store、Service、Composable 职责清晰分离 |
 | 🔄 **Mock/API 无缝切换** | 数据适配器模式，环境变量一键切换数据源 |
-| 📊 **ECharts 图表** | 柱状图、折线图、饼图、中国地图等多种图表类型 |
+| 📊 **ECharts 图表** | 柱状图、折线图、饼图、热力日历、仪表盘等多种图表 |
+| 🚨 **实时告警流** | 终端风格滚动告警日志，支持多级别着色 |
+| 📡 **实时数据流** | 模拟实时业务数据推送，支持 WebSocket 扩展 |
 | 📱 **大屏自适应** | useScreenScale 组合式函数，支持多种缩放策略 |
 | 📝 **日志系统** | 分级日志输出，开发/生产环境自动适配 |
 | ✅ **测试覆盖** | Vitest 单元测试 + Playwright E2E 测试 |
+| 📸 **自动截图** | 一键生成大屏效果图，方便文档展示 |
 | 🎨 **代码质量** | ESLint + Prettier + Husky 保证代码规范 |
 | 🔌 **实时数据** | WebSocket 连接支持，可接入实时推送 |
 | ⏱️ **定时刷新** | 内置自动刷新机制，模拟真实大屏场景 |
@@ -144,9 +167,11 @@ ZeroToOne/
 第 5 步：组件开发   → 封装 DataCard、RankList 等可复用组件
 第 6 步：数据适配   → 理解适配器模式，实现 Mock/API 切换
 第 7 步：大屏自适应 → 实现不同分辨率下的完美适配
-第 8 步：测试保障   → 编写单元测试和 E2E 测试
-第 9 步：性能优化   → 了解大屏渲染优化与分包策略
-第 10 步：打包部署  → 将大屏发布上线
+第 8 步：实时数据   → 实时数据流、告警流、仪表盘实现
+第 9 步：测试保障   → 编写单元测试和 E2E 测试
+第 10 步：自动截图  → 使用 Playwright 自动生成效果图
+第 11 步：性能优化  → 了解大屏渲染优化与分包策略
+第 12 步：打包部署  → 将大屏发布上线
 ```
 
 ---
@@ -172,9 +197,30 @@ npm run test:unit
 # 运行 E2E 测试
 npm run test:e2e
 
+# 自动截图（需先启动 dev 服务）
+npm run screenshot
+
 # 构建生产版本
 npm run build
 ```
+
+---
+
+## 📸 自动截图（可选）
+
+项目内置了自动化截图脚本（基于 Playwright），可一键生成多分辨率效果图：
+
+```bash
+# 1. 先启动开发服务器
+npm run dev
+
+# 2. 运行截图脚本
+npm run screenshot
+```
+
+> ⚠️ 首次使用需先下载浏览器：`npx playwright install chromium`
+>
+> 💡 截图脚本位于 `scripts/screenshot.ts`，可根据需要调整分辨率、等待时间等参数。
 
 ---
 
@@ -201,6 +247,7 @@ VITE_API_BASE_URL=http://your-api-server.com
 |------|------|------|
 | 单元测试 | Vitest + @vue/test-utils | 工具函数、Store、组件逻辑 |
 | E2E 测试 | Playwright | 大屏页面完整交互测试 |
+| 自动截图 | Playwright | 生成大屏效果图 |
 | 覆盖率 | v8 provider | 自动生成覆盖率报告 |
 
 ---
