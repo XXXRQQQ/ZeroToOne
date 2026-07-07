@@ -65,4 +65,13 @@ export const dataAdapter = {
     const { apiService } = await import('./api/index')
     return apiService.getCategoryData()
   },
+
+  async getAlertsData() {
+    if (getDataSource() === 'mock') {
+      const { mockAlertsData } = await import('./mock/alerts')
+      return mockAlertsData()
+    }
+    const { apiService } = await import('./api/index')
+    return apiService.getAlertsData()
+  },
 }

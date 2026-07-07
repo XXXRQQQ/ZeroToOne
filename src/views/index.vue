@@ -91,14 +91,18 @@
             :rate="5.1"
           />
         </div>
-        <!-- 地图区域（用大尺寸柱状图 + 关键数据替代） -->
+        <!-- 实时数据仪表盘 -->
         <div class="panel-section center-chart">
           <div class="section-title">
-            <span class="title-decor"></span>
-            <span>全国销售概览</span>
+            <span class="title-decor decor-cyan"></span>
+            <span>实时数据仪表盘</span>
+            <span class="live-badge">
+              <span class="live-dot"></span>
+              LIVE
+            </span>
           </div>
           <div class="chart-box map-box">
-            <MapChart :data="dataStore.mapData" :loading="dataStore.loading" />
+            <LiveMetrics :trendData="dataStore.trendData" :loading="dataStore.loading" />
           </div>
         </div>
       </section>
@@ -107,11 +111,12 @@
       <aside class="panel panel-right">
         <div class="panel-section">
           <div class="section-title">
-            <span class="title-decor decor-purple"></span>
-            <span>产品分类占比</span>
+            <span class="title-decor decor-orange"></span>
+            <span>实时告警监控</span>
+            <span class="alert-badge" v-if="dataStore.alertsUnread > 0">{{ dataStore.alertsUnread }}条未处理</span>
           </div>
-          <div class="chart-box">
-            <PieChart :data="dataStore.categoryData" :loading="dataStore.loading" />
+          <div class="chart-box rank-box">
+            <AlertFlow :data="dataStore.alertsData" :loading="dataStore.loading" />
           </div>
         </div>
         <div class="panel-section">
@@ -156,6 +161,8 @@ import BarChart from '@/components/charts/BarChart.vue'
 import PieChart from '@/components/charts/PieChart.vue'
 import MapChart from '@/components/map/MapChart.vue'
 import RankList from '@/components/dashboard/RankList.vue'
+import AlertFlow from '@/components/dashboard/AlertFlow.vue'
+import LiveMetrics from '@/components/dashboard/LiveMetrics.vue'
 
 // Stores
 const appStore = useAppStore()
@@ -491,6 +498,51 @@ onUnmounted(() => {
   &.decor-gold {
     background: linear-gradient(180deg, #f59e0b, transparent);
   }
+
+  &.decor-orange {
+    background: linear-gradient(180deg, #f97316, transparent);
+  }
+}
+
+.alert-badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: #f59e0b;
+  padding: 2px 8px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 10px;
+  animation: badge-pulse 2s infinite;
+}
+
+.live-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: live-blink 1s infinite;
+  }
+
+  @keyframes live-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+}
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 .chart-box {

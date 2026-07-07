@@ -17,6 +17,7 @@ export const useDataStore = defineStore('data', () => {
   const trendData = ref<any>(null)
   const rankData = ref<any[]>([])
   const categoryData = ref<any[]>([])
+  const alertsData = ref<any>(null)
 
   // --- 计算属性 ---
   const isMock = computed(() => dataSource.value === 'mock')
@@ -39,6 +40,20 @@ export const useDataStore = defineStore('data', () => {
     return raw?.data?.conversionRate || 0
   })
 
+  // 告警数据
+  const alertsList = computed(() => {
+    const raw = alertsData.value
+    return raw?.data?.list || []
+  })
+  const alertsTotal = computed(() => {
+    const raw = alertsData.value
+    return raw?.data?.total || 0
+  })
+  const alertsUnread = computed(() => {
+    const raw = alertsData.value
+    return raw?.data?.unread || 0
+  })
+
   // 销售总额
   const salesTotal = computed(() => {
     const raw = salesData.value
@@ -56,12 +71,13 @@ export const useDataStore = defineStore('data', () => {
     error.value = null
 
     try {
-      const [sales, map, trend, rank, category] = await Promise.all([
+      const [sales, map, trend, rank, category, alerts] = await Promise.all([
         dataAdapter.getSalesData(),
         dataAdapter.getMapData(),
         dataAdapter.getTrendData(),
         dataAdapter.getRankData(),
         dataAdapter.getCategoryData(),
+        dataAdapter.getAlertsData(),
       ])
 
       salesData.value = sales
@@ -69,6 +85,7 @@ export const useDataStore = defineStore('data', () => {
       trendData.value = trend
       rankData.value = rank
       categoryData.value = category
+      alertsData.value = alerts
 
       logger.info('大屏数据加载完成')
     } catch (err) {
@@ -89,12 +106,16 @@ export const useDataStore = defineStore('data', () => {
     trendData,
     rankData,
     categoryData,
+    alertsData,
     isMock,
     todaySales,
     orders,
     totalUv,
     conversionRate,
     salesTotal,
+    alertsList,
+    alertsTotal,
+    alertsUnread,
     setDataSource,
     fetchDashboardData,
   }

@@ -42,4 +42,9 @@ export const apiService = {
     logger.debug('API: 获取分类数据')
     return request('/dashboard/category')
   },
+
+  async getAlertsData() {
+    logger.debug('API: 获取告警数据')
+    return request('/dashboard/alerts')
+  },
 }
