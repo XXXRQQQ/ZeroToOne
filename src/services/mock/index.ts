@@ -2,4 +2,4 @@
 export { mockSalesData } from './sales'
 export { mockMapData } from './map'
 export { mockTrendData } from './trend'
-export { mockRankData } from './rank'
+export { mockRankData, mockCategoryData } from './rank'

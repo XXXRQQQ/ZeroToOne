@@ -12,13 +12,38 @@ export const useDataStore = defineStore('data', () => {
   const error = ref<string | null>(null)
 
   // 大屏各区域数据
-  const salesData = ref<any[]>([])
+  const salesData = ref<any>(null)
   const mapData = ref<any[]>([])
-  const trendData = ref<any[]>([])
+  const trendData = ref<any>(null)
   const rankData = ref<any[]>([])
+  const categoryData = ref<any[]>([])
 
   // --- 计算属性 ---
   const isMock = computed(() => dataSource.value === 'mock')
+
+  // 指标卡片数据
+  const todaySales = computed(() => {
+    const raw = trendData.value
+    return raw?.data?.todaySales || 0
+  })
+  const orders = computed(() => {
+    const raw = trendData.value
+    return raw?.data?.orders || 0
+  })
+  const totalUv = computed(() => {
+    const raw = trendData.value
+    return raw?.data?.totalUv || 0
+  })
+  const conversionRate = computed(() => {
+    const raw = trendData.value
+    return raw?.data?.conversionRate || 0
+  })
+
+  // 销售总额
+  const salesTotal = computed(() => {
+    const raw = salesData.value
+    return raw?.data?.total || 0
+  })
 
   // --- 方法 ---
   function setDataSource(source: DataSource): void {
@@ -31,17 +56,19 @@ export const useDataStore = defineStore('data', () => {
     error.value = null
 
     try {
-      const [sales, map, trend, rank] = await Promise.all([
+      const [sales, map, trend, rank, category] = await Promise.all([
         dataAdapter.getSalesData(),
         dataAdapter.getMapData(),
         dataAdapter.getTrendData(),
         dataAdapter.getRankData(),
+        dataAdapter.getCategoryData(),
       ])
 
       salesData.value = sales
       mapData.value = map
       trendData.value = trend
       rankData.value = rank
+      categoryData.value = category
 
       logger.info('大屏数据加载完成')
     } catch (err) {
@@ -61,7 +88,13 @@ export const useDataStore = defineStore('data', () => {
     mapData,
     trendData,
     rankData,
+    categoryData,
     isMock,
+    todaySales,
+    orders,
+    totalUv,
+    conversionRate,
+    salesTotal,
     setDataSource,
     fetchDashboardData,
   }

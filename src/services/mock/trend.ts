@@ -1,19 +1,21 @@
-// 趋势数据 Mock
+// 实时指标数据 Mock
 export function mockTrendData() {
-  const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`)
-
-  const data = hours.map((hour) => ({
-    time: hour,
-    pv: Math.floor(Math.random() * 3000) + 1000,
-    uv: Math.floor(Math.random() * 1500) + 500,
-  }))
+  const totalPv = Math.floor(Math.random() * 50000) + 180000
+  const totalUv = Math.floor(totalPv * (0.5 + Math.random() * 0.2))
+  const todaySales = Math.floor(Math.random() * 300000) + 800000
+  const orders = Math.floor(Math.random() * 2000) + 5000
+  const conversionRate = +(Math.random() * 3 + 2.5).toFixed(2)
+  const onlineUsers = Math.floor(Math.random() * 3000) + 8000
 
   return {
     code: 200,
     data: {
-      totalPv: data.reduce((sum, item) => sum + item.pv, 0),
-      totalUv: data.reduce((sum, item) => sum + item.uv, 0),
-      list: data,
+      totalPv,
+      totalUv,
+      todaySales,
+      orders,
+      conversionRate,
+      onlineUsers,
     },
     message: 'success',
     timestamp: Date.now(),

@@ -56,4 +56,13 @@ export const dataAdapter = {
     const { apiService } = await import('./api/index')
     return apiService.getRankData()
   },
+
+  async getCategoryData() {
+    if (getDataSource() === 'mock') {
+      const { mockCategoryData } = await import('./mock/rank')
+      return mockCategoryData()
+    }
+    const { apiService } = await import('./api/index')
+    return apiService.getCategoryData()
+  },
 }

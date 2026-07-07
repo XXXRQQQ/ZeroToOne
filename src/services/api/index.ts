@@ -37,4 +37,9 @@ export const apiService = {
     logger.debug('API: 获取排行榜数据')
     return request('/dashboard/rank')
   },
+
+  async getCategoryData() {
+    logger.debug('API: 获取分类数据')
+    return request('/dashboard/category')
+  },
 }

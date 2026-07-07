@@ -35,14 +35,14 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
 })
 
+import { computed } from 'vue'
+
 // 兼容 dataAdapter 返回的数据结构
 const list = computed(() => {
   const raw = props.data
   if (!raw) return []
   return Array.isArray(raw) ? raw : raw?.data || []
 })
-
-import { computed } from 'vue'
 
 function getRankClass(index: number): string {
   if (index === 0) return 'rank-gold'
@@ -54,7 +54,8 @@ function getRankClass(index: number): string {
 
 <style scoped lang="scss">
 .rank-list {
-  flex: 1;
+  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

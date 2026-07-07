@@ -1,5 +1,5 @@
 <template>
-  <div class="map-chart-wrapper">
+  <div class="line-chart-wrapper">
     <div class="chart-loading" v-if="loading">加载中...</div>
     <div class="chart-empty" v-else-if="!hasData">暂无数据</div>
     <div ref="chartRef" class="chart-container" v-show="!loading && hasData"></div>
@@ -26,65 +26,92 @@ let chartInstance: echarts.ECharts | null = null
 const chartData = computed(() => {
   const raw = props.data
   if (!raw) return []
-  return Array.isArray(raw?.data) ? raw.data : []
+  return Array.isArray(raw?.data?.list) ? raw.data.list : []
 })
 
 const hasData = computed(() => chartData.value.length > 0)
 
-const treemapColors = [
-  '#1890ff', '#13c2c2', '#a855f7', '#f59e0b', '#10b981',
-  '#6366f1', '#ec4899', '#14b8a6', '#f97316', '#8b5cf6',
-  '#06b6d4', '#84cc16',
-]
-
 function getOption(): EChartsOption {
   const list = chartData.value as any[]
-
   return {
     tooltip: {
-      trigger: 'item',
+      trigger: 'axis',
       backgroundColor: 'rgba(10,15,40,0.95)',
       borderColor: 'rgba(24,144,255,0.3)',
       textStyle: { color: '#fff', fontSize: 12 },
-      formatter: '{b}: {c} 万元',
+      axisPointer: {
+        type: 'cross',
+        lineStyle: { color: 'rgba(24,144,255,0.3)', type: 'dashed' },
+      },
+    },
+    legend: {
+      data: ['销售额', '目标'],
+      bottom: 0,
+      textStyle: { color: 'rgba(255,255,255,0.6)', fontSize: 11 },
+      itemWidth: 14,
+      itemHeight: 3,
+    },
+    grid: {
+      top: 15,
+      right: 25,
+      bottom: 35,
+      left: 50,
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: list.map((item: any) => item.month),
+      axisLabel: { color: 'rgba(255,255,255,0.45)', fontSize: 11 },
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+      axisTick: { show: false },
+    },
+    yAxis: {
+      type: 'value',
+      name: '万元',
+      nameTextStyle: { color: 'rgba(255,255,255,0.4)', fontSize: 11 },
+      axisLabel: { color: 'rgba(255,255,255,0.45)', fontSize: 11 },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)', type: 'dashed' } },
     },
     series: [
       {
-        type: 'treemap',
-        width: '95%',
-        height: '90%',
-        top: 'center',
-        left: 'center',
-        roam: false,
-        nodeClick: false,
-        breadcrumb: { show: false },
-        label: {
-          show: true,
-          formatter: '{b}\n{c}',
-          color: '#fff',
-          fontSize: 11,
+        name: '销售额',
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 6,
+        data: list.map((item: any) => item.value),
+        lineStyle: {
+          width: 2.5,
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            { offset: 0, color: '#1890ff' },
+            { offset: 1, color: '#13c2c2' },
+          ]),
         },
         itemStyle: {
-          borderColor: 'rgba(10,15,40,0.9)',
+          color: '#1890ff',
+          borderColor: '#fff',
           borderWidth: 2,
-          gapWidth: 2,
         },
-        levels: [
-          {
-            itemStyle: {
-              borderColor: 'rgba(10,15,40,0.9)',
-              borderWidth: 2,
-              gapWidth: 2,
-            },
-          },
-        ],
-        data: list.map((item: any, index: number) => ({
-          name: item.name,
-          value: item.value,
-          itemStyle: {
-            color: treemapColors[index % treemapColors.length],
-          },
-        })),
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(24,144,255,0.25)' },
+            { offset: 1, color: 'rgba(24,144,255,0.01)' },
+          ]),
+        },
+      },
+      {
+        name: '目标',
+        type: 'line',
+        smooth: true,
+        symbol: 'none',
+        data: list.map((item: any) => item.target),
+        lineStyle: {
+          width: 1.5,
+          color: 'rgba(255,255,255,0.3)',
+          type: 'dashed',
+        },
+        itemStyle: { color: 'rgba(255,255,255,0.3)' },
+        areaStyle: { color: 'transparent' },
       },
     ],
   }
@@ -127,7 +154,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.map-chart-wrapper {
+.line-chart-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
@@ -147,7 +174,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 14px;
 }
 </style>

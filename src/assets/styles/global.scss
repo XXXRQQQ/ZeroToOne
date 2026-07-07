@@ -16,7 +16,7 @@ body {
     'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0a0e1a;
+  background-color: #0a0e27;
   color: #ffffff;
 }
 
@@ -32,7 +32,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 3px;
 }
 
@@ -49,13 +49,17 @@ body {
 :root {
   --color-primary: #1890ff;
   --color-secondary: #13c2c2;
+  --color-accent: #a855f7;
   --color-success: #52c41a;
   --color-warning: #faad14;
   --color-danger: #ff4d4f;
   --color-info: #722ed1;
-  --color-bg: #0a0e1a;
-  --color-bg-panel: rgba(6, 12, 28, 0.8);
+  --color-bg: #0a0e27;
+  --color-bg-panel: rgba(10, 15, 40, 0.85);
   --color-text: #ffffff;
   --color-text-secondary: rgba(255, 255, 255, 0.65);
   --color-border: rgba(24, 144, 255, 0.2);
+  --color-border-glow: rgba(0, 200, 255, 0.4);
+  --color-glow-blue: rgba(24, 144, 255, 0.15);
+  --color-glow-cyan: rgba(19, 194, 194, 0.15);
 }

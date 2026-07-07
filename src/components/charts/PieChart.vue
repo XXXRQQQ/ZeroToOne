@@ -1,5 +1,5 @@
 <template>
-  <div class="map-chart-wrapper">
+  <div class="pie-chart-wrapper">
     <div class="chart-loading" v-if="loading">加载中...</div>
     <div class="chart-empty" v-else-if="!hasData">暂无数据</div>
     <div ref="chartRef" class="chart-container" v-show="!loading && hasData"></div>
@@ -31,59 +31,61 @@ const chartData = computed(() => {
 
 const hasData = computed(() => chartData.value.length > 0)
 
-const treemapColors = [
-  '#1890ff', '#13c2c2', '#a855f7', '#f59e0b', '#10b981',
-  '#6366f1', '#ec4899', '#14b8a6', '#f97316', '#8b5cf6',
-  '#06b6d4', '#84cc16',
-]
+const pieColors = ['#1890ff', '#13c2c2', '#a855f7', '#f59e0b', '#10b981', '#6366f1']
 
 function getOption(): EChartsOption {
   const list = chartData.value as any[]
-
   return {
     tooltip: {
       trigger: 'item',
       backgroundColor: 'rgba(10,15,40,0.95)',
       borderColor: 'rgba(24,144,255,0.3)',
       textStyle: { color: '#fff', fontSize: 12 },
-      formatter: '{b}: {c} 万元',
+      formatter: '{b}: {c}%',
+    },
+    legend: {
+      orient: 'vertical',
+      right: 0,
+      top: 'center',
+      textStyle: { color: 'rgba(255,255,255,0.6)', fontSize: 10 },
+      itemWidth: 8,
+      itemHeight: 8,
+      itemGap: 8,
+      formatter: (name: string) => {
+        const item = list.find((i: any) => i.name === name)
+        return `${name}  ${item ? item.value + '%' : ''}`
+      },
     },
     series: [
       {
-        type: 'treemap',
-        width: '95%',
-        height: '90%',
-        top: 'center',
-        left: 'center',
-        roam: false,
-        nodeClick: false,
-        breadcrumb: { show: false },
-        label: {
-          show: true,
-          formatter: '{b}\n{c}',
-          color: '#fff',
-          fontSize: 11,
-        },
+        type: 'pie',
+        radius: ['38%', '55%'],
+        center: ['38%', '50%'],
+        avoidLabelOverlap: false,
         itemStyle: {
-          borderColor: 'rgba(10,15,40,0.9)',
+          borderRadius: 4,
+          borderColor: 'rgba(10,15,40,0.8)',
           borderWidth: 2,
-          gapWidth: 2,
         },
-        levels: [
-          {
-            itemStyle: {
-              borderColor: 'rgba(10,15,40,0.9)',
-              borderWidth: 2,
-              gapWidth: 2,
-            },
+        label: {
+          show: false,
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 13,
+            fontWeight: 'bold',
+            color: '#fff',
           },
-        ],
-        data: list.map((item: any, index: number) => ({
-          name: item.name,
-          value: item.value,
           itemStyle: {
-            color: treemapColors[index % treemapColors.length],
+            shadowBlur: 20,
+            shadowColor: 'rgba(24,144,255,0.5)',
           },
+          scaleSize: 8,
+        },
+        data: list.map((item: any, index: number) => ({
+          ...item,
+          itemStyle: { color: pieColors[index % pieColors.length] },
         })),
       },
     ],
@@ -127,7 +129,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.map-chart-wrapper {
+.pie-chart-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
@@ -147,7 +149,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 14px;
 }
 </style>
