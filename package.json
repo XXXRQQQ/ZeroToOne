@@ -1,0 +1,56 @@
+{
+  "name": "zero-to-one",
+  "version": "1.0.0",
+  "description": "从零到一数据大屏 - 从0到1学习制作数据可视化大屏",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:unit:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "lint": "eslint . --ext .vue,.js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{vue,ts,tsx,js,jsx,scss,css,json}\"",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0",
+    "pinia": "^2.1.0",
+    "echarts": "^5.5.0",
+    "vue-echarts": "^6.7.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.4.0",
+    "typescript": "^5.5.0",
+    "vue-tsc": "^2.0.0",
+    "@types/node": "^22.0.0",
+    "sass": "^1.77.0",
+    "vitest": "^2.0.0",
+    "@vue/test-utils": "^2.4.0",
+    "jsdom": "^24.0.0",
+    "@playwright/test": "^1.45.0",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "vue-eslint-parser": "^9.4.0",
+    "prettier": "^3.3.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.0",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
+    "@types/echarts": "^4.9.0"
+  },
+  "lint-staged": {
+    "*.{vue,ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{scss,css,json,md}": [
+      "prettier --write"
+    ]
+  }
+}

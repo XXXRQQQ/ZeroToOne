@@ -1,0 +1,46 @@
+// 地图数据 Mock
+export function mockMapData() {
+  const provinces = [
+    { name: '北京', value: 9342 },
+    { name: '天津', value: 4231 },
+    { name: '上海', value: 10234 },
+    { name: '重庆', value: 5678 },
+    { name: '河北', value: 4567 },
+    { name: '山西', value: 3456 },
+    { name: '辽宁', value: 5678 },
+    { name: '吉林', value: 2345 },
+    { name: '黑龙江', value: 3456 },
+    { name: '江苏', value: 9876 },
+    { name: '浙江', value: 8765 },
+    { name: '安徽', value: 4567 },
+    { name: '福建', value: 5678 },
+    { name: '江西', value: 3456 },
+    { name: '山东', value: 8765 },
+    { name: '河南', value: 6789 },
+    { name: '湖北', value: 5678 },
+    { name: '湖南', value: 4567 },
+    { name: '广东', value: 12345 },
+    { name: '广西', value: 3456 },
+    { name: '海南', value: 1234 },
+    { name: '四川', value: 6789 },
+    { name: '贵州', value: 2345 },
+    { name: '云南', value: 3456 },
+    { name: '西藏', value: 567 },
+    { name: '陕西', value: 4567 },
+    { name: '甘肃', value: 2345 },
+    { name: '青海', value: 1234 },
+    { name: '宁夏', value: 1234 },
+    { name: '新疆', value: 3456 },
+    { name: '内蒙古', value: 4567 },
+    { name: '台湾', value: 6789 },
+    { name: '香港', value: 5678 },
+    { name: '澳门', value: 2345 },
+  ]
+
+  return {
+    code: 200,
+    data: provinces,
+    message: 'success',
+    timestamp: Date.now(),
+  }
+}
